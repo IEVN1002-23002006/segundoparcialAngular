@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Formulario Zodiaco</h1>
+  <div>
+    <section>
+<div>
+  <section>
+    <h2>Formulario datos personales</h2>
+    <form>
+      <label for="nombre">Ingrese su nombre</label>
+      <br><br>
+
+      <input [(ngModel)]="nombre" name="nombre" id="nombre" type="text" placeholder="Ingrese su nombre">
+      <br><br>
+      <hr>
+
+      <label for="paterno">Ingrese su apellido paterno</label>
+      <br><br>
+
+      <input [(ngModel)]="paterno" name="paterno" id="paterno" type="text" placeholder="ingrese su apellido paterno">
+      <br><br>
+      <hr>
+
+      <label for="materno">Ingrese su apellido materno</label>
+      <br><br>
+
+      <input [(ngModel)]="materno" name="materno" id="materno" type="text" placeholder="ingrese su apellido materno">
+      <br><br>
+      <hr>
+
+      <label>Ingrese su fecha de nacimiento</label>
+      <br><br>
+      <label for="dia">Dia de nacimiento:</label>
+      <input [(ngModel)]="dia" type="text" name="dia" id="dia" placeholder="dia de nacimiento">
+      <br>
+
+      <label for="mes">Mes de nacimiento:</label>
+      <input [(ngModel)]="mes" type="text" name="mes" id="mes" placeholder="mes de nacimiento">
+      <br>
+
+      <label for="year">Año de nacimiento:</label>
+      <input [(ngModel)]="year" type="text" name="year" id="year" placeholder="año de nacimiento">
+      <br><br>
+      <hr>
+
+      <h3><b>Ingrese su sexo</b></h3>
+      <input type="checkbox" name="sexo" id="sexo1">
+      <label for="sexo1">Mujer</label>
+      <br><br>
+      <input type="checkbox" name="sexo" id="sexo2">
+      <label for="sexo2">Hombre</label>
+      <br><br>
+      <hr>
+
+
+      <button (click)="signo(); calcularEdad()" type="button">Registrar</button>
+      <br><br>
+      <hr>
+
+      <div class="col-6">
+        <div class="row">
+          <h3>Mi nombre es: {{ nombre }} {{ paterno }} {{ materno }}</h3>
+          <p>Tienes: {{ Edad }} años</p>
+          <p>Tu signo chino es: <b>{{ signoZodiacal }}</b></p>
+         <img *ngIf="muestraImage && imagenzodiaco"
+     [src]="imagenzodiaco"
+     [style.width.px]="imageWidth"
+     [style.margin.px]="imageMargin"
+     alt="Signo Zodiacal">
+        </div>
+      </div>
+    </form>
+  </section>
+</div>
+    </section>
+  </div>
+</body>
+</html>
