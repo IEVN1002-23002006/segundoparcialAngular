@@ -1,0 +1,41 @@
+<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow">
+  <h1>Cinépolis</h1>
+  <hr>
+  <div class="col-6">
+    <h2>Entradas</h2>
+    <br>
+
+    <form [formGroup]="formularios">
+      <label>Nombre:</label>
+      <input type="text" formControlName="nombre" placeholder="nombre comprador">
+      <br><hr><br>
+
+      <label>Cantidad de compradores:</label>
+      <input type="text" formControlName="cantidad" placeholder="numero compradores">
+      <br><hr><br>
+
+      <label>Tarjeta Cinépolis:</label>
+      <label>Si</label>
+      <input type="radio" formControlName="tarjeta" value="si">
+      <label>No</label>
+      <input type="radio" formControlName="tarjeta" value="no">
+      <br><hr><br>
+
+      <label>Boletos comprados:</label>
+      <input type="text" formControlName="boleto" placeholder="boletos comprados">
+
+      <div class="flex justify-end mt-5">
+        <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5" (click)="Valorboletos()">
+          Procesar
+        </button>
+      </div>
+    </form>
+
+    <br>
+
+    <div>
+      <h2><b>ALERTA!!</b> {{mensajeError}}</h2>
+      <h2>Valor a pagar: ${{ total }}</h2>
+    </div>
+  </div>
+</div>
