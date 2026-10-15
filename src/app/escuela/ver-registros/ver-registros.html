@@ -1,0 +1,216 @@
+
+<div class="max-w-5xl mx-auto my-8 p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+
+  <!-- Encabezado -->
+  <div class="flex flex-wrap justify-between items-center gap-3 mb-5">
+
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800">
+        Registros de Cinépolis
+      </h1>
+
+      <p class="text-sm text-gray-500">
+        Historial de ventas
+      </p>
+    </div>
+
+    <a
+      routerLink="/escuela/cinepolis"
+      class="px-4 py-2 bg-blue-700 text-white text-sm rounded-lg hover:bg-blue-800">
+      Volver a taquilla
+    </a>
+
+  </div>
+
+  <hr class="mb-5">
+
+  <!-- Resumen -->
+  <div class="flex flex-wrap gap-6 mb-5 text-sm text-gray-700">
+
+    <p>
+      Ventas:
+      <strong>{{ listaVentas.length }}</strong>
+    </p>
+
+    <p>
+      Boletos:
+      <strong>{{ totalBoletos }}</strong>
+    </p>
+
+    <p>
+      Ingresos:
+      <strong>
+        {{ totalIngresos | currency:'MXN':'symbol':'1.2-2' }}
+      </strong>
+    </p>
+
+  </div>
+
+  <!-- Mensajes -->
+  <p *ngIf="mensajeError" class="text-sm text-red-600 mb-3">
+    {{ mensajeError }}
+  </p>
+
+  <p *ngIf="mensajeExito" class="text-sm text-green-700 mb-3">
+    {{ mensajeExito }}
+  </p>
+
+  <!-- Tabla -->
+  <div
+    *ngIf="listaVentas.length > 0; else sinRegistros"
+    class="overflow-x-auto border border-gray-200 rounded-lg">
+
+    <table class="w-full text-sm text-left">
+
+      <thead class="bg-gray-100 text-gray-700">
+        <tr>
+          <th class="p-3">Nombre</th>
+          <th class="p-3">Compradores</th>
+          <th class="p-3">Tarjeta</th>
+          <th class="p-3">Boletos</th>
+          <th class="p-3">Total</th>
+          <th class="p-3">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr
+          *ngFor="let item of listaVentas"
+          class="border-t border-gray-200 text-gray-700">
+
+          <!-- Nombre -->
+          <td class="p-3">
+
+            <input
+              *ngIf="editandoId === item.id"
+              type="text"
+              [(ngModel)]="item.nombre"
+              class="w-28 p-2 border rounded">
+
+            <span *ngIf="editandoId !== item.id">
+              {{ item.nombre }}
+            </span>
+
+          </td>
+
+          <!-- Compradores -->
+          <td class="p-3">
+
+            <input
+              *ngIf="editandoId === item.id"
+              type="number"
+              min="1"
+              [(ngModel)]="item.cantidad"
+              class="w-16 p-2 border rounded">
+
+            <span *ngIf="editandoId !== item.id">
+              {{ item.cantidad }}
+            </span>
+
+          </td>
+
+          <!-- Tarjeta -->
+          <td class="p-3">
+
+            <select
+              *ngIf="editandoId === item.id"
+              [(ngModel)]="item.tarjeta"
+              class="p-2 border rounded">
+
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+
+            </select>
+
+            <span *ngIf="editandoId !== item.id">
+              {{ item.tarjeta === 'si' ? 'Sí' : 'No' }}
+            </span>
+
+          </td>
+
+          <!-- Boletos -->
+          <td class="p-3">
+
+            <input
+              *ngIf="editandoId === item.id"
+              type="number"
+              min="1"
+              [(ngModel)]="item.boleto"
+              class="w-16 p-2 border rounded">
+
+            <span *ngIf="editandoId !== item.id">
+              {{ item.boleto }}
+            </span>
+
+          </td>
+
+          <!-- Total -->
+          <td class="p-3 font-semibold">
+
+            {{ item.total | currency:'MXN':'symbol':'1.2-2' }}
+
+          </td>
+
+          <!-- Acciones -->
+          <td class="p-3">
+
+            <div class="flex gap-2">
+
+              <button
+                *ngIf="editandoId !== item.id"
+                type="button"
+                (click)="iniciarEdicion(item.id)"
+                class="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100">
+                Editar
+              </button>
+
+              <button
+                *ngIf="editandoId === item.id"
+                type="button"
+                (click)="guardarEdicion(item)"
+                class="px-3 py-1.5 bg-blue-700 text-white rounded hover:bg-blue-800">
+                Guardar
+              </button>
+
+              <button
+                *ngIf="editandoId === item.id"
+                type="button"
+                (click)="cancelarEdicion()"
+                class="px-3 py-1.5 border rounded hover:bg-gray-100">
+                Cancelar
+              </button>
+
+              <button
+                type="button"
+                (click)="eliminar(item.id)"
+                class="px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-100">
+                Eliminar
+              </button>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <!-- Sin registros -->
+  <ng-template #sinRegistros>
+
+    <div class="text-center p-8 bg-gray-50 rounded-lg">
+
+      <p class="text-gray-500 text-sm">
+        No hay ventas registradas todavía.
+      </p>
+
+    </div>
+
+  </ng-template>
+
+</div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IAlumnos } from '../alumnos';
+import { IAlumno } from '../alumnos';
 
 @Component({
   imports: [FormsModule, ReactiveFormsModule],
@@ -10,11 +11,10 @@ import { IAlumnos } from '../alumnos';
 })
 
 export class ListaAlumnos implements OnInit {
-  formularios!:FormGroup
-
-  alumnos:IAlumnos[]=[]
+  formulario!:FormGroup
+  alumnos:IAlumno[]=[]
   indiceEdicion:number=-1
-  nuevoAlumno:IAlumnos={
+  nuevoAlumno:IAlumno={
     matricula:'',
     nombre: '',
     correo: '',
@@ -23,7 +23,7 @@ export class ListaAlumnos implements OnInit {
 
 ngOnInit():void{
   this.cargarAlumno
-  this.formularios=new FormGroup({
+  this.formulario=new FormGroup({
     matricula: new FormControl(''),
     nombre: new FormControl(''),
     correo: new FormControl(''),
@@ -33,14 +33,13 @@ ngOnInit():void{
 
 agregarAlumno():void{
   if (this.nuevoAlumno.matricula===''|| this.nuevoAlumno.nombre === ''|| this.nuevoAlumno.correo === ''|| this.nuevoAlumno.materia === '') {
-    alert('Todos los campos son ob;igatorios');
+    alert('Todos los campos son obligatorios');
     return;
-
   }
 
   if(this.indiceEdicion !== -1){
     this.alumnos[this.indiceEdicion]={
-      ...this.alumnos
+      ...this.nuevoAlumno
     }
   } else{
     this.alumnos.push({...this.nuevoAlumno})
@@ -51,14 +50,14 @@ agregarAlumno():void{
 }
 
 muestraAlumnos():void{
-  this.nuevoAlumno.matricula=this.formularios.value.matricula
-  this.nuevoAlumno.nombre=this.formularios.value.nombre
-  this.nuevoAlumno.correo=this.formularios.value.correo
-  this.nuevoAlumno.materia=this.formularios.value.materia
+  this.nuevoAlumno.matricula=this.formulario.value.matricula
+  this.nuevoAlumno.nombre=this.formulario.value.nombre
+  this.nuevoAlumno.correo=this.formulario.value.correo
+  this.nuevoAlumno.materia=this.formulario.value.materia
   this.agregarAlumno()
 }
 
-cargarAlumnos():void{
+cargarAlumno():void{
   const datos = localStorage.getItem('alumnos');
 
   if(datos){
@@ -71,7 +70,7 @@ editarAlumno(index:number):void{
     ...this.alumnos[index]
   }
   const alumno=this.alumnos[index]
-  this.formularios.patchValue({
+  this.formulario.patchValue({
     matricula: alumno.matricula,
     nombre:alumno.nombre,
     correo:alumno.correo,
@@ -94,6 +93,12 @@ limpiarCampos():void{
     materia: ''
   }
 
+  this.formulario.patchValue({
+    matricula: this.nuevoAlumno.matricula,
+    nombre: this.nuevoAlumno.nombre,
+    correo: this.nuevoAlumno.correo,
+    materia: this.nuevoAlumno.materia
+  })
 this.indiceEdicion=-1
 }
 }

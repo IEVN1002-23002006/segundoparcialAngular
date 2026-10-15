@@ -1,19 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cinepolis',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './cinepolis.html',
   styleUrl: './cinepolis.css'
 })
 export class Cinepolis implements OnInit {
 
+  private router = inject(Router);
+
   precioBoleto: number = 12;
   total: number = 0;
   mensajeError: string = '';
+  mensajeExito: string = '';
 
   formularios!: FormGroup;
 
@@ -22,36 +26,100 @@ export class Cinepolis implements OnInit {
       nombre: new FormControl(''),
       cantidad: new FormControl(''),
       tarjeta: new FormControl('no'),
-      boleto: new FormControl(''),
+      boleto: new FormControl('')
     });
   }
 
   Valorboletos(): void {
-    let compradores = Number(this.formularios.get('cantidad')?.value);
-    let boletos = Number(this.formularios.get('boleto')?.value);
-    let tarjeta = this.formularios.get('tarjeta')?.value;
-    let maxBoletos = compradores * 7;
+
+    const nombre = String(
+      this.formularios.get('nombre')?.value || ''
+    ).trim();
+
+    const compradores = Number(
+      this.formularios.get('cantidad')?.value
+    );
+
+    const boletos = Number(
+      this.formularios.get('boleto')?.value
+    );
+
+    const tarjeta = this.formularios.get('tarjeta')?.value;
+    const maxBoletos = compradores * 7;
+
+    this.mensajeError = '';
+    this.mensajeExito = '';
+    this.total = 0;
+
+    // Validar campos
+    if (
+      !nombre ||
+      !Number.isInteger(compradores) ||
+      !Number.isInteger(boletos) ||
+      compradores <= 0 ||
+      boletos <= 0
+    ) {
+      this.mensajeError =
+        'Completa todos los campos con datos válidos.';
+      return;
+    }
+
+    // Máximo 7 boletos por comprador
+    if (boletos > maxBoletos) {
+      this.mensajeError =
+        `Máximo 7 boletos por persona. Límite: ${maxBoletos}. NO VENDER.`;
+      return;
+    }
+
+    // Precio inicial
     let pagar = boletos * this.precioBoleto;
 
+    // Descuento del 15% si compra más de 5 boletos
     if (boletos > 5) {
-      pagar = pagar * 0.85; // 15% descuento
+      pagar *= 0.85;
     }
+
+    // Descuento del 10% si compra 3 o menos
     if (boletos <= 3) {
-      pagar = pagar * 0.90; // 10% descuento
+      pagar *= 0.90;
     }
 
+    // Descuento adicional del 15% por tarjeta
     if (tarjeta === 'si') {
-      pagar = pagar * 0.85; // 10% adicional del descuento
+      pagar *= 0.85;
     }
 
-    if(boletos>maxBoletos){
-      this.mensajeError = `nomas 7 boletos por persona (maximo: ${maxBoletos}) NO VENDER`; //por si una persona quiere comprar mas de 7
-      this.total = 0;
-      return;
-    } else if(boletos<maxBoletos){
-      this.mensajeError = `si puedes vender los boletos`
-    }
+    this.total = Number(pagar.toFixed(2));
 
-    this.total = pagar;
+    // Obtener registros anteriores
+    const registrosGuardados = JSON.parse(
+      localStorage.getItem('ventas_cinepolis') || '[]'
+    );
+
+    // Crear nueva venta
+    const nuevaVenta = {
+      id: Date.now(),
+      nombre: nombre,
+      cantidad: compradores,
+      tarjeta: tarjeta,
+      boleto: boletos,
+      total: this.total
+    };
+
+    // Guardar en localStorage
+    registrosGuardados.push(nuevaVenta);
+
+    localStorage.setItem(
+      'ventas_cinepolis',
+      JSON.stringify(registrosGuardados)
+    );
+
+    this.mensajeExito = '¡Venta registrada correctamente!';
+
   }
+
+  irARegistros(): void {
+    this.router.navigate(['/escuela/ver-registros']);
+  }
+
 }

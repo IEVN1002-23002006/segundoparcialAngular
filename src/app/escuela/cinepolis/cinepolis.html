@@ -1,41 +1,130 @@
-<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow">
-  <h1>Cinépolis</h1>
-  <hr>
-  <div class="col-6">
-    <h2>Entradas</h2>
-    <br>
 
-    <form [formGroup]="formularios">
-      <label>Nombre:</label>
-      <input type="text" formControlName="nombre" placeholder="nombre comprador">
-      <br><hr><br>
+<div class="max-w-md mx-auto my-8 p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
 
-      <label>Cantidad de compradores:</label>
-      <input type="text" formControlName="cantidad" placeholder="numero compradores">
-      <br><hr><br>
+  <!-- Encabezado -->
+  <h1 class="text-2xl font-bold text-gray-800">
+    Cinépolis
+  </h1>
 
-      <label>Tarjeta Cinépolis:</label>
-      <label>Si</label>
-      <input type="radio" formControlName="tarjeta" value="si">
-      <label>No</label>
-      <input type="radio" formControlName="tarjeta" value="no">
-      <br><hr><br>
+  <p class="text-sm text-gray-500 mb-5">
+    Venta de boletos
+  </p>
 
-      <label>Boletos comprados:</label>
-      <input type="text" formControlName="boleto" placeholder="boletos comprados">
+  <hr class="mb-5">
 
-      <div class="flex justify-end mt-5">
-        <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5" (click)="Valorboletos()">
-          Procesar
-        </button>
-      </div>
-    </form>
+  <!-- Formulario -->
+  <form [formGroup]="formularios" class="space-y-4">
 
-    <br>
-
+    <!-- Nombre -->
     <div>
-      <h2><b>ALERTA!!</b> {{mensajeError}}</h2>
-      <h2>Valor a pagar: ${{ total }}</h2>
+      <label class="block mb-1 text-sm font-medium text-gray-700">
+        Nombre del comprador
+      </label>
+
+      <input
+        type="text"
+        formControlName="nombre"
+        placeholder="Ingresa tu nombre"
+        class="w-full p-2 border border-gray-300 rounded-lg">
     </div>
+
+    <!-- Compradores -->
+    <div>
+      <label class="block mb-1 text-sm font-medium text-gray-700">
+        Cantidad de compradores
+      </label>
+
+      <input
+        type="number"
+        min="1"
+        formControlName="cantidad"
+        placeholder="Número de compradores"
+        class="w-full p-2 border border-gray-300 rounded-lg">
+    </div>
+
+    <!-- Tarjeta -->
+    <div>
+      <label class="block mb-2 text-sm font-medium text-gray-700">
+        ¿Tienes tarjeta Cinépolis?
+      </label>
+
+      <div class="flex gap-6 text-sm text-gray-700">
+
+        <label class="flex items-center gap-2">
+          <input
+            type="radio"
+            formControlName="tarjeta"
+            value="si">
+          Sí
+        </label>
+
+        <label class="flex items-center gap-2">
+          <input
+            type="radio"
+            formControlName="tarjeta"
+            value="no">
+          No
+        </label>
+
+      </div>
+    </div>
+
+    <!-- Boletos -->
+    <div>
+      <label class="block mb-1 text-sm font-medium text-gray-700">
+        Boletos comprados
+      </label>
+
+      <input
+        type="number"
+        min="1"
+        formControlName="boleto"
+        placeholder="Cantidad de boletos"
+        class="w-full p-2 border border-gray-300 rounded-lg">
+    </div>
+
+    <!-- Procesar -->
+    <button
+      type="button"
+      (click)="Valorboletos()"
+      class="w-full p-2.5 bg-blue-700 text-white rounded-lg hover:bg-blue-800">
+      Procesar venta
+    </button>
+
+    <!-- Ver registros -->
+    <button
+      type="button"
+      (click)="irARegistros()"
+      class="w-full p-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100">
+      Ver registros
+    </button>
+
+  </form>
+
+  <!-- Mensajes -->
+  <div class="mt-5 space-y-3">
+
+    <p *ngIf="mensajeError" class="text-sm text-red-600">
+      {{ mensajeError }}
+    </p>
+
+    <p *ngIf="mensajeExito" class="text-sm text-green-700">
+      {{ mensajeExito }}
+    </p>
+
+    <!-- Total -->
+    <div class="flex justify-between items-center p-3 bg-gray-100 rounded-lg">
+
+      <span class="text-sm font-medium text-gray-700">
+        Total a pagar:
+      </span>
+
+      <span class="text-xl font-bold text-gray-900">
+        {{ total | currency:'MXN':'symbol':'1.2-2' }}
+      </span>
+
+    </div>
+
   </div>
+
 </div>
