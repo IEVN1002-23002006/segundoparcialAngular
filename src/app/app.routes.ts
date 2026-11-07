@@ -48,9 +48,81 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'utl',
+    children:[
+      {
+        path:'ABCAlumnos',
+        children:[
+          {
+            path: 'alumnos',
+            loadComponent:()=>
+            import('./utl/ABCAlumnos/alumnos/alumnos').then(
+            (c)=>c.Alumnos
+          )
+          },
+          {
+            path: 'agregar',
+            loadComponent:()=>
+              import('./utl/ABCAlumnos/agregar/agregar').then(
+                (c)=>c.Agregar
+              )
+          },
+          {
+            path: 'editar',
+            loadComponent:()=>
+              import('./utl/ABCAlumnos/editar/editar').then(
+                (c)=>c.Editar
+              )
+          },
+          {
+            path: 'eliminar',
+            loadComponent:()=>
+              import('./utl/ABCAlumnos/eliminar/eliminar').then(
+                (c)=>c.Eliminar
+              )
+          }
+        ]
+      },
+      {
+      path: 'ABCMaestros',
+      children: [
+        {
+          path: 'maestros',
+          loadComponent: () =>
+            import('./utl/ABCMaestros/maestros/maestros').then(
+              (c) => c.Maestros
+            )
+        },
+        {
+          path: 'agregar',
+          loadComponent: () =>
+            import('./utl/ABCMaestros/agregar/agregar').then(
+              (c) => c.Agregar
+            )
+        },
+        {
+          path: 'editar',
+          loadComponent: () =>
+            import('./utl/ABCMaestros/editar/editar').then(
+              (c) => c.Editar
+            )
+        },
+        {
+          path: 'eliminar',
+          loadComponent: () =>
+            import('./utl/ABCMaestros/eliminar/eliminar').then(
+              (c) => c.Eliminar
+            )
+        },
+      ]
+    }
+    ]
+  },
+  {
     path: '', redirectTo: 'admin', pathMatch: 'full'
   },
   {
     path: '**', redirectTo: 'admin'
   }
+
 ];

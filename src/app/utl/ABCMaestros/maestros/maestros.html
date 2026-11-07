@@ -1,0 +1,90 @@
+<!-- Botón agregar -->
+<div class="mb-4">
+  <button
+    type="button"
+    [routerLink]="['/utl/ABCMaestros/agregar']"
+    class="inline-flex items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 transition-colors">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+    </svg>
+    Agregar Maestro
+  </button>
+</div>
+
+<!-- Card Flowbite -->
+<div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+  <div class="border-b border-gray-200 pb-4 mb-5">
+    <h1 class="text-2xl font-bold tracking-tight text-gray-900">
+      Lista de Maestros
+    </h1>
+  </div>
+
+  <!-- Controles / Filtros -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5 items-end">
+    <div>
+      <label for="search" class="block mb-2 text-sm font-medium text-gray-900">Buscar maestro</label>
+      <input
+        type="text"
+        id="search"
+        [(ngModel)]="listFilter"
+        placeholder="Ingrese nombre..."
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+    </div>
+
+    <div class="text-sm font-medium text-gray-600 pb-2">
+      Filtro: <span class="text-blue-600 font-semibold">{{ listFilter }}</span>
+    </div>
+  </div>
+
+  <!-- Tabla Flowbite -->
+  <div class="relative overflow-x-auto shadow-sm sm:rounded-lg border border-gray-200">
+    <table *ngIf="maestrosList?.length" class="w-full text-sm text-left text-gray-500">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
+        <tr>
+          <th scope="col" class="px-6 py-3">ID Maestro</th>
+          <th scope="col" class="px-6 py-3">Nombre</th>
+          <th scope="col" class="px-6 py-3">Apellido paterno</th>
+          <th scope="col" class="px-6 py-3">Apellido materno</th>
+          <th scope="col" class="px-6 py-3">Correo</th>
+          <th scope="col" class="px-6 py-3 text-center" colspan="2">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr
+          *ngFor="let maestro of maestrosList | maestrosFilter:listFilter"
+          class="bg-white border-b hover:bg-gray-50 transition-colors">
+          <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{{ maestro.Idmaestro }}</td>
+          <td class="px-6 py-4">{{ maestro.nombre }}</td>
+          <td class="px-6 py-4">{{ maestro.apaterno }}</td>
+          <td class="px-6 py-4">{{ maestro.amaterno }}</td>
+          <td class="px-6 py-4">{{ maestro.correo }}</td>
+
+          <td class="px-3 py-4 text-center">
+            <button
+              type="button"
+              [routerLink]="['/utl/ABCMaestros/editar']"
+              [queryParams]="{ id: maestro.Idmaestro }"
+              class="font-medium text-blue-600 hover:underline">
+              Editar
+            </button>
+          </td>
+
+          <td class="px-3 py-4 text-center">
+            <button
+              type="button"
+              [routerLink]="['/utl/ABCMaestros/eliminar']"
+              [queryParams]="{ id: maestro.Idmaestro }"
+              class="font-medium text-red-600 hover:underline">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="maestrosList?.length === 0" class="p-4 text-center text-gray-500 text-sm">
+      No hay maestros registrados en la base de datos.
+    </div>
+  </div>
+</div>
